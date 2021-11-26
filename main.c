@@ -9,20 +9,47 @@
 /*   Updated: 2021/11/24 17:58:01 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+#include <fcntl.h>
 #include "libft.h"
+
+#define BUF_SIZE 20
 
 int	main(void)
 {
 	int	fd;
+	int ret;
+	int i = 0;
+	char buf[BUF_SIZE + 1];
 
-	fd = open("42", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-	printf("return %i \n\n\n",printf(" %c %c %c ", '0', 0, '1'));
-//	printf("return %i \n\n\n",printf("%-14p\n", &str));
-//	printf("return %i \n\n\n",printf("%-3.12s\n", "Papasalut"));
-//	printf("return %i \n\n\n",printf("%020d\n", 18));
-//	printf("return %i \n\n\n",printf("%-012s\n", "Papasalut"));
+	fd = open("test", O_RDONLY);
+	if (fd == -1)
+	{
+		ft_putstr_fd("open() failed\n",1);
+		return (1);
+	}
+	write(1,"fd nb:", 6);
+	ft_putnbr_fd(fd,1);
+	ft_putstr_fd("\n",1);
+	ret = read(fd, buf, BUF_SIZE);
+	ft_putstr_fd(buf, 1);
+	printf("\nA\n");
 
+	while (i < 3)
+	{
+		printf("\nB\n");
+		ret = read(fd, buf, BUF_SIZE);
+		buf[ret] = '\0';
+		ft_putstr_fd(buf, 1);
+		printf("\nret:%i - buf[ret-1]:%c\n", ret, buf[ret-1]);
+		i++;
+	}
+	printf("\nC\n");
 
+	ft_putnbr_fd(ret,1);
+	if (close(fd) == -1)
+	{
+		ft_putstr_fd("close() failed\n",1);
+		return (1);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: vhaefeli <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 14:23:04 by vhaefeli          #+#    #+#             */
-/*   Updated: 2021/11/10 15:18:21 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2021/11/02 16:52:14 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 # include <stdbool.h>
 # include <string.h>
 # include <unistd.h>
-# include <stdarg.h>
-# include <stdbool.h>
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
