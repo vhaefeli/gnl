@@ -6,31 +6,18 @@
 /*   By: vhaefeli <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:01:08 by vhaefeli          #+#    #+#             */
-/*   Updated: 2021/12/02 22:47:12 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2021/12/03 14:50:22 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
+char	*ft_strjoini(char *p23, char *p1, int i)
 {
-	size_t	len;
-
-	len = 0;
-	while (s[len])
-	{
-		if (s[len] != '\0')
-			len++;
-	}
-	return (len);
-}
-
-char	*ft_strjoini(const char *p23, const char *p1, size_t i)
-{
-	size_t	j;
+	int		j;
 	char	*dst;
-	size_t	lone;
-	size_t	ltwo;
+	int		lone;
+	int		ltwo;
 
 	if (!p23 || !p1)
 		return (NULL);
@@ -51,42 +38,11 @@ char	*ft_strjoini(const char *p23, const char *p1, size_t i)
 		j++;
 	}
 	dst[j] = '\0';
+	free(p23);
 	return (dst);
 }
 
-char	*ft_strcpyi(char *str, size_t i)
-{
-	char	*cpy;
-	int		j;
-
-	j = 0;
-	cpy = malloc(ft_strlen(str) - i);
-	i++;
-	while (i < ft_strlen(str))
-	{
-		cpy[j++] = str[i++];
-	}
-	cpy[j] = '\0';
-	return (cpy);
-}
-
-char *ft_strcpy(char *src)
-{
-	char	*dst;
-	int i;
-
-	i = 0;
-	dst = malloc(ft_strlen(src) + 1);
-	while (src[i] != '\0')
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
-}
-
-char*	ft_char_ini(char *str)
+char	*ft_char_ini(char *str)
 {
 	if (str == NULL)
 	{
@@ -96,20 +52,18 @@ char*	ft_char_ini(char *str)
 	return (str);
 }
 
-char	*ft_fill_line(char *p1, char *p2, char *p3, size_t i)
+char	*ft_fill_line(char *p1, char *p2, char *p3, int i)
 {
-	if (ft_strlen(p2) < ft_strlen(p3))
-	{	
-		p2 = ft_strjoini(p3, p1, i);
-		free(p3);
-		return (p2);
-	}
+	if (p3 == NULL)
+		p2 = ft_strjoini(p2, p1, i);
+	
 	else
 	{
-		p3 = ft_strjoini(p2, p1, i);
-		free(p2);
-		return (p3);
+		p2 = ft_strjoini(p3, p1, i);
+		free(p3);
+		p3 = NULL;
 	}
+	return (p2);
 }
 
 int	ft_searchendline(char *p1)
@@ -127,13 +81,12 @@ char	*get_next_line(int fd)
 	char		p1[BUFFER_SIZE + 1];
 	char		*p2;
 	static char	*p3 = NULL;
-	int		i;
+	int			i;
 
 	i = 0;
-	p3 = ft_char_ini(p3);
 	p2 = ft_char_ini(p3);
 	read(fd, p1, BUFFER_SIZE);
-	if (p1[1] == '\0')
+	if (p1[1] == '\0' || fd < 0 || !fd)
 		return (NULL);
 	while (i >= 0)
 	{

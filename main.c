@@ -6,14 +6,14 @@
 /*   By: vhaefeli <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 09:27:35 by vhaefeli          #+#    #+#             */
-/*   Updated: 2021/12/02 19:50:06 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2021/12/03 14:21:53 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <fcntl.h>
-#include "libft.h"
+
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 6
+# define BUFFER_SIZE 1
 #endif
 
 #include "get_next_line.h"
@@ -27,12 +27,9 @@ int	main(void)
 	fd = open("test", O_RDONLY);
 	if (fd == -1)
 	{
-		ft_putstr_fd("open() failed\n",1);
+		printf("open() failed\n");
 		return (1);
 	}
-	write(1,"fd nb:", 6);
-	ft_putnbr_fd(fd,1);
-	ft_putstr_fd("\n",1);
 	while (i < 10)
 	{
 		str = get_next_line(fd);
@@ -42,7 +39,7 @@ int	main(void)
 	free(str);
 	if (close(fd) == -1)
 	{
-		ft_putstr_fd("close() failed\n",1);
+		printf("close() failed\n");
 		return (1);
 	}
 	return (0);
