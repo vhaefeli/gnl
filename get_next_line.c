@@ -6,7 +6,7 @@
 /*   By: vhaefeli <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:01:08 by vhaefeli          #+#    #+#             */
-/*   Updated: 2021/12/09 13:33:17 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2021/12/09 14:01:52 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*get_next_line(int fd)
 	ft_ini(&buf, &p2, &i);
 	c = read(fd, buf, BUFFER_SIZE);
 	if (BUFFER_SIZE <= 0 || fd < 0 || (c <= 0 && p2[0] == 0))
-		return (ft_end_error(&buf,&p2));
+		return (ft_end_error(&buf, &p2));
 	while (i >= 0)
 	{
 		p1 = ft_strjoini(p2, buf, c);

@@ -1,20 +1,22 @@
 .DS_Store
 
-#.gitignore
+.gitignore
 
 # pour les fichiers uniquement la comme info
 info*
 
-#main.c
-#libft.h
-#libft.a
+main.c
+libft.h
+libft.a
 
 *.swp
 
-a.out
+a.out*
 
 *.o
 
 *.a
 
 *.c~
+
+test*
