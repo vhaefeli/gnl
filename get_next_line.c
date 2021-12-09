@@ -6,22 +6,20 @@
 /*   By: vhaefeli <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:01:08 by vhaefeli          #+#    #+#             */
-/*   Updated: 2021/12/03 14:50:22 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2021/12/09 13:33:17 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strjoini(char *p23, char *p1, int i)
+char	*ft_strjoini(char *p12, char *buf, int i)
 {
 	int		j;
 	char	*dst;
 	int		lone;
 	int		ltwo;
 
-	if (!p23 || !p1)
-		return (NULL);
-	lone = ft_strlen(p23);
+	lone = ft_strlen(p12);
 	ltwo = i;
 	j = 0;
 	dst = malloc(lone + ltwo + 1);
@@ -29,76 +27,80 @@ char	*ft_strjoini(char *p23, char *p1, int i)
 		return (NULL);
 	while (j < lone)
 	{
-		dst[j] = p23[j];
+		dst[j] = p12[j];
 		j++;
 	}
 	while (j < (lone + ltwo))
 	{
-		dst[j] = p1[j - lone];
+		dst[j] = buf[j - lone];
 		j++;
 	}
+	free(p12);
 	dst[j] = '\0';
-	free(p23);
 	return (dst);
 }
 
-char	*ft_char_ini(char *str)
+void	ft_ini(char **buf, char **p2, int *i)
 {
-	if (str == NULL)
+	if (*p2 == NULL)
 	{
-		str = malloc(1);
-		str[0] = '\0';
+		*p2 = malloc(1);
+		(*p2)[0] = '\0';
 	}
-	return (str);
+	*buf = malloc(BUFFER_SIZE + 1);
+	(*buf)[BUFFER_SIZE] = '\0';
+	*i = 0;
+	return ;
 }
 
-char	*ft_fill_line(char *p1, char *p2, char *p3, int i)
+char	*ft_fill_line(char *buf, char *p1, char *p2, int i)
 {
-	if (p3 == NULL)
-		p2 = ft_strjoini(p2, p1, i);
-	
+	if (p2[0] == '\0')
+	{
+		p1 = ft_strjoini(p1, buf, i);
+	}
 	else
 	{
-		p2 = ft_strjoini(p3, p1, i);
-		free(p3);
-		p3 = NULL;
+		p1 = ft_strjoini(p2, buf, i);
+		p2[0] = '\0';
 	}
-	return (p2);
+	return (p1);
 }
 
-int	ft_searchendline(char *p1)
+int	ft_searchendline(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while (p1[i] != '\n' && p1[i] != '\0')
+	while (str[i] != '\n' && str[i] != '\0')
 		i++;
 	return (i);
 }
 
 char	*get_next_line(int fd)
 {
-	char		p1[BUFFER_SIZE + 1];
-	char		*p2;
-	static char	*p3 = NULL;
+	char		*buf;
+	char		*p1;
+	static char	*p2 = NULL;
 	int			i;
+	int			c;
 
-	i = 0;
-	p2 = ft_char_ini(p3);
-	read(fd, p1, BUFFER_SIZE);
-	if (p1[1] == '\0' || fd < 0 || !fd)
-		return (NULL);
+	ft_ini(&buf, &p2, &i);
+	c = read(fd, buf, BUFFER_SIZE);
+	if (BUFFER_SIZE <= 0 || fd < 0 || (c <= 0 && p2[0] == 0))
+		return (ft_end_error(&buf,&p2));
 	while (i >= 0)
 	{
+		p1 = ft_strjoini(p2, buf, c);
 		i = ft_searchendline(p1);
-		p2 = ft_fill_line(p1, p2, p3, i);
-	 	if (i == BUFFER_SIZE)
-			read(fd, p1, BUFFER_SIZE);
-		else
+		if (i == ft_strlen(p1) && i >= c && c != 0)
 		{
-			p3 = ft_strcpyi(p1, i);
-			i = -1;
+			p2 = ft_strcpyi(p1, 0);
+			c = read(fd, buf, BUFFER_SIZE);
 		}
+		else
+			ft_finish_line(&p1, &p2, &i);
 	}
-	return (p2);
+	free(buf);
+	return (p1);
 }

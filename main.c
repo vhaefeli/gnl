@@ -6,7 +6,7 @@
 /*   By: vhaefeli <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 09:27:35 by vhaefeli          #+#    #+#             */
-/*   Updated: 2021/12/03 14:21:53 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2021/12/09 13:17:41 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <fcntl.h>
@@ -30,13 +30,13 @@ int	main(void)
 		printf("open() failed\n");
 		return (1);
 	}
-	while (i < 10)
+	while (i < 7)
 	{
 		str = get_next_line(fd);
-		printf("ligne %i:\n%s\n", i++, str);
+		printf("%s", str);
+		i++;
+		free(str);
 	}
-
-	free(str);
 	if (close(fd) == -1)
 	{
 		printf("close() failed\n");

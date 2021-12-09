@@ -6,7 +6,7 @@
 /*   By: vhaefeli <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:01:08 by vhaefeli          #+#    #+#             */
-/*   Updated: 2021/12/03 13:44:11 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2021/12/09 13:33:29 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,65 @@ char	*ft_strcpyi(char *str, int i)
 	int		j;
 
 	j = 0;
-	cpy = malloc(ft_strlen(str) - i);
-	i++;
-	while (i < ft_strlen(str))
+	cpy = malloc(ft_strlen(str) - i + 1);
+	if (i == 0 && str[0] != '\n')
 	{
-		cpy[j++] = str[i++];
+		while (str[i] != '\0')
+		{
+			cpy[i] = str[i];
+			i++;
+		}
+		cpy[i] = '\0';
+		free(str);
 	}
-	cpy[j] = '\0';
+	else
+	{
+		i++;
+		while (i < ft_strlen(str))
+		{
+			cpy[j++] = str[i++];
+		}
+		cpy[j] = '\0';
+	}
 	return (cpy);
 }
 
-char *ft_strcpy(char *src)
+char	*ft_strcut(char *str)
 {
 	char	*dst;
-	int i;
+	int		i;
+	int		j;
 
 	i = 0;
-	dst = malloc(ft_strlen(src) + 1);
-	while (src[i] != '\0')
-	{
-		dst[i] = src[i];
+	j = 0;
+	while (str[i] != '\n' && str[i] != '\0')
 		i++;
+	if (str[i] == '\n')
+		i++;
+	dst = malloc(i + 1);
+	while (j < i)
+	{
+		dst[j] = str[j];
+		j++;
 	}
-	dst[i] = '\0';
+	dst[j] = '\0';
+	free(str);
 	return (dst);
+}
+
+void	ft_finish_line(char **p1, char **p2, int *i)
+{
+	*p2 = ft_strcpyi(*p1, *i);
+	*p1 = ft_strcut(*p1);
+	*i = -1;
+	return ;
+}
+
+char	*ft_end_error(char **buf, char **p2)
+{
+	free(*buf);
+	*buf = NULL;
+	free(*p2);
+	*p2 = NULL;
+	return (NULL);
 }

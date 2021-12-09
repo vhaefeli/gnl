@@ -6,7 +6,7 @@
 /*   By: vhaefeli <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:04:37 by vhaefeli          #+#    #+#             */
-/*   Updated: 2021/12/03 14:49:38 by vhaefeli         ###   ########.fr       */
+/*   Updated: 2021/12/09 11:51:52 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@
 int		ft_strlen(const char *s);
 char	*ft_strcpyi(char *str, int i);
 char	*ft_strcpy(char *src);
-char	*ft_strjoini(char *p23, char *p1, int i);
-char	*ft_char_ini(char *str);
-char	*ft_fill_line(char *p1, char *p2, char *p3, int i);
-int		ft_searchendline(char *p1);
+char	*ft_strjoini(char *p12, char *buf, int i);
+void	ft_ini(char **buf, char **p2, int *i);
+char	*ft_fill_line(char *buf, char *p1, char *p2, int i);
+int		ft_searchendline(char *str);
+char	*ft_strcut(char *str);
+char	*ft_end_error(char **buf, char **p2);
+void	ft_finish_line(char **p1, char **p2, int *i);
 char	*get_next_line(int fd);
 
 #endif
