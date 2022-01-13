@@ -1,95 +1,89 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vhaefeli <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/02 10:01:08 by vhaefeli          #+#    #+#             */
-/*   Updated: 2021/12/09 13:33:29 by vhaefeli         ###   ########.fr       */
+/*   Created: 2022/01/11 14:33:25 by vhaefeli          #+#    #+#             */
+/*   Updated: 2022/01/12 15:22:54 by vhaefeli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
-	int	len;
+	size_t	len;
 
 	len = 0;
 	while (s[len])
-	{
-		if (s[len] != '\0')
-			len++;
-	}
+		len++;
 	return (len);
 }
 
-char	*ft_strcpyi(char *str, int i)
+int	ft_strfind(const char *s, int c)
 {
-	char	*cpy;
-	int		j;
-
-	j = 0;
-	cpy = malloc(ft_strlen(str) - i + 1);
-	if (i == 0 && str[0] != '\n')
-	{
-		while (str[i] != '\0')
-		{
-			cpy[i] = str[i];
-			i++;
-		}
-		cpy[i] = '\0';
-		free(str);
-	}
-	else
-	{
-		i++;
-		while (i < ft_strlen(str))
-		{
-			cpy[j++] = str[i++];
-		}
-		cpy[j] = '\0';
-	}
-	return (cpy);
-}
-
-char	*ft_strcut(char *str)
-{
-	char	*dst;
-	int		i;
-	int		j;
+	int	i;
 
 	i = 0;
-	j = 0;
-	while (str[i] != '\n' && str[i] != '\0')
-		i++;
-	if (str[i] == '\n')
-		i++;
-	dst = malloc(i + 1);
-	while (j < i)
+	while (s[i] != '\0')
 	{
-		dst[j] = str[j];
-		j++;
+		if (s[i] == c)
+			return (i + 1);
+		i++;
 	}
-	dst[j] = '\0';
-	free(str);
+	return (0);
+}
+
+int	ft_strfindend(const char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == c)
+			return (i + 1);
+		i++;
+	}
+	return (ft_strlen(s));
+}
+
+void	ft_ini(char **str, int strlenmin)
+{
+	if (!(*str))
+	{
+		*str = malloc(strlenmin + 1);
+		(*str)[strlenmin] = '\0';
+	}
+}
+
+char	*ft_strjoinfree1(char *s1, char *s2)
+{
+	size_t	i;
+	char	*dst;
+	size_t	lone;
+	size_t	ltwo;
+
+	if (!s1 || !s2)
+		return (NULL);
+	lone = ft_strlen(s1);
+	ltwo = ft_strlen(s2);
+	i = 0;
+	dst = malloc(lone + ltwo + 1);
+	if (!dst)
+		return (NULL);
+	while (i < lone)
+	{
+		dst[i] = s1[i];
+		i++;
+	}
+	while (i < (lone + ltwo + 1))
+	{
+		dst[i] = s2[i - lone];
+		i++;
+	}
+	free (s1);
 	return (dst);
-}
-
-void	ft_finish_line(char **p1, char **p2, int *i)
-{
-	*p2 = ft_strcpyi(*p1, *i);
-	*p1 = ft_strcut(*p1);
-	*i = -1;
-	return ;
-}
-
-char	*ft_end_error(char **buf, char **p2)
-{
-	free(*buf);
-	*buf = NULL;
-	free(*p2);
-	*p2 = NULL;
-	return (NULL);
 }
